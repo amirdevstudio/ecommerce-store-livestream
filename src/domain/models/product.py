@@ -1,19 +1,21 @@
 from dataclasses import dataclass
 from typing import List
 
+from src.domain.models.abstract import AbstractModel
+
 
 @dataclass
-class ProductCategory:
+class ProductCategory(AbstractModel):
     name: str
 
 
 @dataclass
-class ProductTag:
+class ProductTag(AbstractModel):
     name: str
 
 
 @dataclass
-class Product:
+class Product(AbstractModel):
     name: str
     categories: List[ProductCategory]
     price: float
