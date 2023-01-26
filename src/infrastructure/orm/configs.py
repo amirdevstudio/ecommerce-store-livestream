@@ -1,6 +1,8 @@
 from datetime import datetime
 
+from inflection import tableize
 from peewee import PostgresqlDatabase, Model, IntegerField, DateTimeField
+
 
 database = PostgresqlDatabase(
     'ecommerce_store.dev',
@@ -18,7 +20,9 @@ class BaseModel(Model):
     class Meta:
         database = database
 
+        @staticmethod
+        def table_function(model_class):
+            return tableize(model_class.__name__)
 
-class BaseAssociation(BaseModel):
-    class Meta:
-        database = database
+
+BaseAssociation = BaseModel
