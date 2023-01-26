@@ -1,10 +1,6 @@
 from fastapi import APIRouter
 
+from src.web.api.v1.router import router as version_router
+
 router = APIRouter(prefix='/api')
-
-
-@router.get('/ping')
-async def ping():
-    return {
-        'ping': 'pong!'
-    }
+router.include_router(version_router)

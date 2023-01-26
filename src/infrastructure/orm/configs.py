@@ -17,3 +17,8 @@ class BaseModel(Model):
 
     class Meta:
         database = database
+
+
+class BaseAssociation(BaseModel):
+    class Meta:
+        database = database

@@ -1,10 +1,9 @@
 import uvicorn
-from src.infrastructure.orm.setup import setup_tables
-from src.infrastructure.orm.configs import database
+from src.infrastructure.orm.setup import reset_tables
 
 
 if __name__ == "__main__":
-    setup_tables(database, [])
+    reset_tables()
     uvicorn.run(
         "src.web.app:app",
         reload=True,
