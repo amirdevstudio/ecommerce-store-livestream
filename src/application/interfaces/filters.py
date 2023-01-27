@@ -1,5 +1,6 @@
+from dataclasses import dataclass
 from enum import Enum
-from typing import Dict
+from typing import Dict, Any
 
 
 class QueryFilterOperators(Enum):
@@ -19,12 +20,15 @@ class QueryFilterOperators(Enum):
     NOT_IN = "not_in"
 
 
-class QueryFilter:
-    def __init__(self, field: str, value: str, operator: QueryFilterOperators):
-        self.field = field
-        self.value = value
-        self.operator = operator
+@dataclass
+class AbstractQueryFilter:
+    field: str
+    value: Any
+    operator: QueryFilterOperators
+
+    Operators = QueryFilterOperators
 
 
-class QueryFilters(Dict[str, QueryFilter]):
-    ...
+@dataclass
+class AbstractQueryFilters:
+    filters: Dict[str, AbstractQueryFilter]

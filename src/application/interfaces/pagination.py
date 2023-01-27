@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 
@@ -6,15 +6,15 @@ from dataclasses import dataclass
 class AbstractPaginationOptions(ABC):
     page: int
     per_page: int
-    is_zero_based: bool = False
 
     @classmethod
+    @abstractmethod
     def create_default(cls):
-        return cls(1, 10)
+        ...
 
 
 @dataclass
-class AbstractPaginationResult(ABC):
+class AbstractPaginatedResults(ABC):
     total: int
     items: list
     options: AbstractPaginationOptions
