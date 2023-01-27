@@ -4,7 +4,7 @@ from src.application.interfaces.functions import AbstractFunction, AbstractFunct
 from src.infrastructure.utils import get_default_logger
 
 
-class SingleFunctionExecutor(AbstractFunctionExecutor):
+class FunctionExecutor(AbstractFunctionExecutor):
     def __init__(self, logger: logging.Logger = None):
         self._logger = logger or get_default_logger(__name__)
 

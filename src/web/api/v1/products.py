@@ -1,16 +1,17 @@
+from amir_dev_studio.dependency_injection import get_service
 from fastapi import APIRouter
 
-router = APIRouter(prefix='/products', tags=['products'])
+from src.application.functions.get_products import GetProducts
+from src.application.interfaces.functions import AbstractFunctionExecutor
+
+router = APIRouter(prefix='/products', tags=['Products'])
 
 @router.get('')
 def get_products():
-    return {
-        'products':
-            [
-                'product1',
-                'product2'
-            ]
-    }
+    executor = get_service(AbstractFunctionExecutor)
+    function = get_service(GetProducts)
+
+    return executor.execute(function)
 
 
 @router.get('/{product_id}')
