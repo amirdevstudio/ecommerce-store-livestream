@@ -1,5 +1,5 @@
 import uvicorn
-from src.infrastructure.orm.setup import reset_tables
+from src.infrastructure.orm.postgresql.setup import reset_tables
 
 
 if __name__ == "__main__":

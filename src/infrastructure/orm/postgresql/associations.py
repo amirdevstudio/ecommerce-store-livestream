@@ -1,7 +1,7 @@
 from peewee import ForeignKeyField
 
-from src.infrastructure.orm.models import Product, ProductCategory, ProductTag
-from src.infrastructure.orm.configs import BaseAssociation
+from src.infrastructure.orm.postgresql.models import Product, ProductCategory, ProductTag
+from src.infrastructure.orm.postgresql.configs import BaseAssociation
 
 
 class ProductsTags(BaseAssociation):

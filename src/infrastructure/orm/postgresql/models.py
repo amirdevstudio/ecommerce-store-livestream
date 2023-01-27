@@ -1,6 +1,6 @@
 from peewee import CharField, DecimalField
 
-from src.infrastructure.orm.configs import BaseModel
+from src.infrastructure.orm.postgresql.configs import BaseModel
 
 
 class Product(BaseModel):

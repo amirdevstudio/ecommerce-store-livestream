@@ -1,6 +1,6 @@
-from src.infrastructure.orm.configs import database
-from src.infrastructure.orm.models import Product, ProductCategory, ProductTag
-from src.infrastructure.orm.associations import ProductsTags, ProductsCategories
+from src.infrastructure.orm.postgresql.configs import database
+from src.infrastructure.orm.postgresql.models import Product, ProductCategory, ProductTag
+from src.infrastructure.orm.postgresql.associations import ProductsTags, ProductsCategories
 
 _models = [
     Product,
