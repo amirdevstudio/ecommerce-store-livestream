@@ -2,7 +2,7 @@ from abc import abstractmethod
 from typing import TypeVar, List, Generic, Type
 
 from src.application.interfaces.repositories import AbstractRepository
-from src.infrastructure.orm.postgresql.mappers import AbstractOrmMapper
+from src.infrastructure.database.postgresql.mappers.base import AbstractOrmMapper
 
 _EntityType = TypeVar("_EntityType")
 _EntityIdType = TypeVar("_EntityIdType")
