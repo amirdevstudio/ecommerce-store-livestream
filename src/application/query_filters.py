@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, Tuple
+from typing import Any, Dict
 
 
 class QueryFilterOperators(Enum):
@@ -38,6 +38,8 @@ class QueryFilters:
     def from_tuples(cls, tuples: list[tuple[str, Any, QueryFilterOperators]]):
         filters = cls()
         for field_, value, operator in tuples:
+            if not value:
+                continue
             filters.add(
                 QueryFilter(
                     field=field_,

@@ -1,18 +1,18 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from src.web.dtos.abstract import HttpRequestBodyDto, HttpResponseBodyDto
 from src.domain.models.product import Product
 
 
 @dataclass
-class ProductHttpGetResponseDto(HttpResponseBodyDto):
+class ProductHttpResponseDto(HttpResponseBodyDto):
     name: str
     price: float
     description: str
     description_excerpt: str
 
     @classmethod
-    def from_domain_model(cls, product: Product):
+    def from_domain_model(cls, product: Product) -> 'ProductHttpResponseDto':
         if len(product.description) > 200:
             excerpt = product.description[:197] + '...'
         else:
@@ -27,7 +27,7 @@ class ProductHttpGetResponseDto(HttpResponseBodyDto):
 
 
 @dataclass
-class ProductHttpPostRequestDto(HttpRequestBodyDto):
+class ProductHttpRequestDto(HttpRequestBodyDto):
     name: str
     price: float
     description: str
@@ -38,19 +38,4 @@ class ProductHttpPostRequestDto(HttpRequestBodyDto):
             name=self.name,
             price=self.price,
             description=self.description
-        )
-
-
-@dataclass
-class ProductHttpPostResponseDto(HttpResponseBodyDto):
-    name: str
-    price: float
-    description: str
-
-    @classmethod
-    def from_domain_model(cls, product: Product) -> 'ProductHttpPostResponseDto':
-        return cls(
-            name=product.name,
-            price=product.price,
-            description=product.description
         )
