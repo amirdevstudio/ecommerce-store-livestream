@@ -11,8 +11,8 @@ class ProductRepository(
     BasePostgresqlRepository[Product, int],
     AbstractProductRepository
 ):
-    def get_orm_class(self) -> type:
+    def _get_orm_class(self) -> type:
         return ProductDbModel
 
-    def get_orm_mapper(self) -> ProductOrmMapper:
+    def _get_orm_mapper(self) -> ProductOrmMapper:
         return get_service(ProductOrmMapper)

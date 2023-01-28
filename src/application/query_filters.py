@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict
@@ -25,7 +26,6 @@ class QueryFilter:
     field: str
     value: Any
     operator: QueryFilterOperators
-
 
 @dataclass
 class QueryFilters:

@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar, List
 
+from src.application.query_filters import QueryFilters
+from src.application.sorting import SortingOptions
 from src.domain.models.product import Product
 
 _EntityType = TypeVar("_EntityType")
@@ -9,7 +11,12 @@ _EntityIdType = TypeVar("_EntityIdType")
 
 class AbstractRepository(ABC, Generic[_EntityType, _EntityIdType]):
     @abstractmethod
-    def get(self, *args, **kwargs) -> List[_EntityType]:
+    def get(
+            self,
+            filters: QueryFilters,
+            sorting_options: SortingOptions,
+            pagination_options
+    ) -> List[_EntityType]:
         ...
 
     @abstractmethod
