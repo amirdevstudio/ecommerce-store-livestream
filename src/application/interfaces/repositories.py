@@ -17,15 +17,15 @@ class AbstractRepository(ABC, Generic[_EntityType, _EntityIdType]):
         ...
 
     @abstractmethod
-    def add(self, entity: _EntityType, *args, **kwargs):
+    def add(self, entity: _EntityType, *args, **kwargs) -> _EntityType:
         ...
 
     @abstractmethod
-    def update(self, entity: _EntityType, *args, **kwargs):
+    def update(self, entity: _EntityType, *args, **kwargs) -> _EntityType:
         ...
 
     @abstractmethod
-    def delete(self, entity_id: _EntityIdType, *args, **kwargs):
+    def delete(self, entity_id: _EntityIdType, *args, **kwargs) -> None:
         ...
 
 

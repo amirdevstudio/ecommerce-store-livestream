@@ -1,10 +1,10 @@
 from amir_dev_studio.dependency_injection import get_service
 
-from src.application.interfaces.filters import AbstractQueryFilters
-from src.application.interfaces.pagination import AbstractPaginationOptions
+from src.application.pagination import PaginationOptions
+from src.application.query_filters import QueryFilters
 from src.application.interfaces.repositories import AbstractProductRepository
 from src.application.interfaces.functions import AbstractFunction
-from src.application.interfaces.sorting import AbstractSortingOptions
+from src.application.sorting import SortingOptions
 from src.infrastructure.utils import get_default_logger
 
 
@@ -15,9 +15,9 @@ class GetProducts(AbstractFunction):
 
     def call(
             self,
-            filters: AbstractQueryFilters,
-            sorting_options: AbstractSortingOptions,
-            pagination_options: AbstractPaginationOptions,
+            filters: QueryFilters,
+            sorting_options: SortingOptions,
+            pagination_options: PaginationOptions,
     ):
         return self.repository.get(
             filters=filters,

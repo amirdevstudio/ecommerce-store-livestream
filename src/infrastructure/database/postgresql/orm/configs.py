@@ -1,8 +1,7 @@
 from datetime import datetime
 
 from inflection import tableize
-from peewee import PostgresqlDatabase, Model, IntegerField, DateTimeField
-
+from peewee import PostgresqlDatabase, Model, IntegerField, DateTimeField, AutoField
 
 database = PostgresqlDatabase(
     'ecommerce_store.dev',
@@ -12,7 +11,7 @@ database = PostgresqlDatabase(
 
 
 class BaseModel(Model):
-    id = IntegerField(primary_key=True)
+    id = AutoField()
     db_record_created_at = DateTimeField(default=datetime.now)
     db_record_updated_at = DateTimeField(default=datetime.now)
     db_record_deleted_at = DateTimeField(null=True)

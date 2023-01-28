@@ -1,23 +1,23 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
-from src.domain.models.abstract import AbstractModel
+from src.domain.models.base import BaseModel
 
 
 @dataclass
-class ProductCategory(AbstractModel):
+class ProductCategory(BaseModel):
     name: str
 
 
 @dataclass
-class ProductTag(AbstractModel):
+class ProductTag(BaseModel):
     name: str
 
 
 @dataclass
-class Product(AbstractModel):
+class Product(BaseModel):
     name: str
-    categories: List[ProductCategory]
     price: float
     description: str
-    tags: List[ProductTag]
+    categories: List[ProductCategory] = field(default_factory=list)
+    tags: List[ProductTag] = field(default_factory=list)

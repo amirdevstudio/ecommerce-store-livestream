@@ -5,7 +5,7 @@ from src.domain.models.product import Product
 
 
 @dataclass
-class ProductHttpGetResponseBodyDTO(HttpResponseBodyDto):
+class ProductHttpGetResponseDto(HttpResponseBodyDto):
     name: str
     price: float
     description: str
@@ -27,6 +27,30 @@ class ProductHttpGetResponseBodyDTO(HttpResponseBodyDto):
 
 
 @dataclass
-class ProductHttpPostRequestBodyDTO(HttpRequestBodyDto):
+class ProductHttpPostRequestDto(HttpRequestBodyDto):
+    name: str
+    price: float
+    description: str
+
     def to_domain_model(self):
-        pass
+        return Product(
+            id=None,
+            name=self.name,
+            price=self.price,
+            description=self.description
+        )
+
+
+@dataclass
+class ProductHttpPostResponseDto(HttpResponseBodyDto):
+    name: str
+    price: float
+    description: str
+
+    @classmethod
+    def from_domain_model(cls, product: Product) -> 'ProductHttpPostResponseDto':
+        return cls(
+            name=product.name,
+            price=product.price,
+            description=product.description
+        )
