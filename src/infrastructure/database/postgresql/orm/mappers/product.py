@@ -1,4 +1,4 @@
-from src.infrastructure.database.postgresql.mappers.base import AbstractOrmMapper
+from src.infrastructure.database.postgresql.orm.mappers.base import AbstractOrmMapper
 from src.infrastructure.database.postgresql.orm.models import Product as ProductOrmModel
 from src.domain.models.product import Product as ProductDomainModel
 

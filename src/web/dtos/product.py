@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from src.web.dtos.abstract import HttpRequestBodyDto, HttpResponseBodyDto
 from src.domain.models.product import Product

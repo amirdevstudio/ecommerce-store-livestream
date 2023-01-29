@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from inflection import tableize
-from peewee import PostgresqlDatabase, Model, IntegerField, DateTimeField, AutoField
+from peewee import PostgresqlDatabase, Model, DateTimeField, AutoField
 
 database = PostgresqlDatabase(
     'ecommerce_store.dev',

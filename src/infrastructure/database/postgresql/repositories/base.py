@@ -1,11 +1,11 @@
 from abc import abstractmethod
-from typing import TypeVar, List, Generic, Type
+from typing import TypeVar, Generic, Type
 
 from src.application.interfaces.repositories import AbstractRepository
 from src.application.pagination import PaginationOptions, PaginatedResults
 from src.application.query_filters import QueryFilters
 from src.application.sorting import SortingOptions
-from src.infrastructure.database.postgresql.mappers.base import AbstractOrmMapper
+from src.infrastructure.database.postgresql.orm.mappers.base import AbstractOrmMapper
 from src.infrastructure.database.postgresql.orm.adapters.peewee import PeeweeSelectQueryAdapter
 from src.infrastructure.database.postgresql.orm.configs import BaseModel as BaseDbModel
 from src.domain.models.abstract import AbstractModel as AbstractDomainModel

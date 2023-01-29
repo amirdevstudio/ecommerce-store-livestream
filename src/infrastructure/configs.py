@@ -5,7 +5,7 @@ from amir_dev_studio.dependency_injection import (
 
 from src.application.interfaces.repositories import AbstractProductRepository
 from src.application.interfaces.functions import AbstractFunctionExecutor
-from src.infrastructure.database.postgresql.mappers.product import ProductOrmMapper
+from src.infrastructure.database.postgresql.orm.mappers.product import ProductOrmMapper
 from src.infrastructure.database.postgresql.repositories.product import ProductRepository
 from src.infrastructure.functions.base import FunctionExecutor
 

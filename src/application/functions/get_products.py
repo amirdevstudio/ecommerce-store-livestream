@@ -1,5 +1,3 @@
-from typing import TypeVar, Generic
-
 from amir_dev_studio.dependency_injection import get_service
 
 from src.application.pagination import PaginationOptions, PaginatedResults

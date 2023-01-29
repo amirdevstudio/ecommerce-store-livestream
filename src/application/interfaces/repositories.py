@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar, List
+from typing import Generic, TypeVar
 
+from src.application.pagination import PaginatedResults
 from src.application.query_filters import QueryFilters
 from src.application.sorting import SortingOptions
 from src.domain.models.product import Product
@@ -16,7 +17,7 @@ class AbstractRepository(ABC, Generic[_EntityType, _EntityIdType]):
             filters: QueryFilters,
             sorting_options: SortingOptions,
             pagination_options
-    ) -> List[_EntityType]:
+    ) -> PaginatedResults[_EntityType]:
         ...
 
     @abstractmethod
