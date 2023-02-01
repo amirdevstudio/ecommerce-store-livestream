@@ -5,16 +5,16 @@ from src.domain.models.abstract import AbstractModel
 
 
 @dataclass
-class HttpRequestBodyDto(ABC):
+class AbstractHttpRequestDto(ABC):
     @abstractmethod
     def to_domain_model(self) -> AbstractModel:
         ...
 
 
 @dataclass
-class HttpResponseBodyDto(ABC):
+class AbstractHttpResponseDto(ABC):
 
     @classmethod
     @abstractmethod
-    def from_domain_model(cls, model: AbstractModel) -> 'HttpResponseBodyDto':
+    def from_domain_model(cls, model: AbstractModel) -> 'AbstractHttpResponseDto':
         ...

@@ -1,13 +1,38 @@
+from contextvars import ContextVar
 from datetime import datetime
 
 from inflection import tableize
-from peewee import PostgresqlDatabase, Model, DateTimeField, AutoField
+# noinspection PyProtectedMember
+from peewee import _ConnectionState
+from peewee import (
+    PostgresqlDatabase,
+    Model,
+    DateTimeField,
+    AutoField,
+)
+
+_db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
+_db_state = ContextVar("_db_state", default=_db_state_default.copy())
+
+class _PeeweeConnectionState(_ConnectionState):
+    def __init__(self, **kwargs):
+        super().__setattr__("_state", _db_state)
+        super().__init__(**kwargs)
+
+    def __setattr__(self, name, value):
+        self._state.get()[name] = value
+
+    def __getattr__(self, name):
+        return self._state.get()[name]
+
 
 database = PostgresqlDatabase(
     'ecommerce_store.dev',
     user='postgres',
     password='root'
 )
+
+database._state = _PeeweeConnectionState()
 
 
 class BaseModel(Model):

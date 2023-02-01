@@ -5,7 +5,7 @@ from src.application.query_filters import QueryFilters, QueryFilterOperators, Qu
 from src.application.sorting import SortingOptions, SortingOption, SortingDirections
 
 
-class PeeweeSelectQueryAdapter:
+class PeeweeSelectQueryExtension:
     def __init__(self, query: peewee.ModelSelect):
         self.query = query
 
@@ -67,7 +67,7 @@ class PeeweeSelectQueryAdapter:
             self._apply_filter(filter_)
 
     def apply_pagination(self, pagination_options: PaginationOptions):
-        self.query.paginate(pagination_options.page, pagination_options.per_page)
+        self.query = self.query.paginate(pagination_options.page, pagination_options.per_page)
 
     def apply_sorting(self, sorting_options: SortingOptions):
         for option in sorting_options.options.values():

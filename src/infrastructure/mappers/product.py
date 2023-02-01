@@ -1,9 +1,17 @@
-from src.infrastructure.database.postgresql.orm.mappers.base import AbstractOrmMapper
-from src.infrastructure.database.postgresql.orm.models import Product as ProductOrmModel
+from src.application.interfaces.mapper import AbstractEntityMapper, _OrmEntity, _DomainEntity
+from src.infrastructure.database.postgresql.orm.models.product import Product as ProductOrmModel
 from src.domain.models.product import Product as ProductDomainModel
 
 
-class ProductOrmMapper(AbstractOrmMapper[ProductDomainModel, ProductOrmModel]):
+class ProductOrmMapper(AbstractEntityMapper[ProductDomainModel, ProductOrmModel]):
+    def domain_to_dict(self, domain_entity: ProductDomainModel) -> dict:
+        return {
+            'id': domain_entity.id if domain_entity.id else None,
+            'name': domain_entity.name,
+            'description': domain_entity.description,
+            'price': domain_entity.price
+        }
+
     def domain_to_orm(self, domain_entity: ProductDomainModel) -> ProductOrmModel:
         return ProductOrmModel(
             id=domain_entity.id if domain_entity.id else None,

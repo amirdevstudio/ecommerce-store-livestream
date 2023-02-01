@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict
+from typing import Any, Dict, Iterable
 
 
 class QueryFilterOperators(Enum):
@@ -33,6 +33,9 @@ class QueryFilters:
     def add(self, filter_: QueryFilter):
         self.filters[filter_.field] = filter_
 
+    def merge(self, query_filters: 'QueryFilters'):
+        self.filters.update(query_filters.filters)
+
     @classmethod
     def from_tuples(cls, tuples: list[tuple[str, Any, QueryFilterOperators]]):
         filters = cls()
@@ -47,3 +50,12 @@ class QueryFilters:
                 )
             )
         return filters
+
+class QueryFilterRecipes:
+    @staticmethod
+    def where_field_in_values(field_: str, value: Iterable[Any]):
+        return QueryFilters.from_tuples([(field_, value, QueryFilterOperators.IN)])
+
+    @staticmethod
+    def where_id_equals_value(value: int):
+        return QueryFilters.from_tuples([("id", value, QueryFilterOperators.EQUALS)])
