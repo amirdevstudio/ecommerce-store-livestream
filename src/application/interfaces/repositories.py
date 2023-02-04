@@ -53,9 +53,9 @@ class AbstractProductTagsRepository(AbstractRepository[ProductTag, int], ABC):
     ...
 
 
-class AbstractProductToCategoryRepository(AbstractRepository[ProductCategory, int], ABC):
+class AbstractProductCategoryRelationRepository(AbstractRepository[ProductCategory, int], ABC):
     ...
 
 
-class AbstractProductToTagRepository(AbstractRepository[ProductTag, int], ABC):
+class AbstractProductTagRelationRepository(AbstractRepository[ProductTag, int], ABC):
     ...

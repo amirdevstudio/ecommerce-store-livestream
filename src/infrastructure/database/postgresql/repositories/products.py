@@ -5,13 +5,13 @@ from amir_dev_studio.dependency_injection import get_service
 from src.application.interfaces.repositories import (
     AbstractProductRepository,
     AbstractProductCategoriesRepository,
-    AbstractProductTagsRepository, AbstractProductToCategoryRepository
+    AbstractProductTagsRepository, AbstractProductCategoryRelationRepository
 )
 from src.application.pagination import PaginationOptions
 from src.application.query_filters import QueryFilters, QueryFilterTemplates
 from src.application.sorting import SortingOptions
 from src.domain.entities.product import Product, ProductCategory, ProductTag
-from src.infrastructure.database.postgresql.orm.associations import ProductToTag, ProductToCategory
+from src.infrastructure.database.postgresql.orm.associations import ProductTagRelation, ProductCategoryRelation
 from src.infrastructure.database.postgresql.orm.extensions.peewee import PeeweeSelectQueryExtension
 from src.infrastructure.database.postgresql.orm.models.product import Product as ProductDbModel, ProductCategory as ProductCategoryDbModel
 from src.infrastructure.database.postgresql.repositories.base import BasePostgresqlRepository
@@ -30,9 +30,9 @@ class ProductRepository(
             auto_mapper=get_service(ProductMapper)
         )
         self.categories_repository = get_service(AbstractProductCategoriesRepository)
-        self.categories_link_repository = get_service(AbstractProductToCategoryRepository)
+        self.categories_link_repository = get_service(AbstractProductCategoryRelationRepository)
         self.tags_repository = get_service(AbstractProductTagsRepository)
-        self.tags_link_repository = get_service(AbstractProductToCategoryRepository)
+        self.tags_link_repository = get_service(AbstractProductCategoryRelationRepository)
 
     def get(
             self,
@@ -43,13 +43,13 @@ class ProductRepository(
         products = super().get(filters, pagination_options, sorting_options)
         product_ids = [product.id for product in products.items]
 
-        query = ProductCategoryDbModel.select().join(ProductToCategory).where(
-            ProductToCategory.product_id.in_(product_ids)
+        query = ProductCategoryDbModel.select().join(ProductCategoryRelation).where(
+            ProductCategoryRelation.product_id.in_(product_ids)
         )
 
         for repository, link_model in [
-            (self.categories_repository, ProductToCategory),
-            (self.tags_repository, ProductToTag)
+            (self.categories_repository, ProductCategoryRelation),
+            (self.tags_repository, ProductTagRelation)
         ]:
             query_filters = QueryFilterTemplates.where_field_in_values(
                 field_='product_id',
@@ -84,7 +84,7 @@ class ProductRepository(
 
     def add(self, product: Product, *args, **kwargs):
         categories_repository = get_service(AbstractProductCategoriesRepository)
-        products_categories_repository = get_service(AbstractProductToCategoryRepository)
+        products_categories_repository = get_service(AbstractProductCategoryRelationRepository)
         products_tags_repository = get_service(AbstractProductTagsRepository)
         tags_repository = get_service(AbstractProductTagsRepository)
 
@@ -101,8 +101,8 @@ class ProductRepository(
         categories_query = QueryFilterTemplates.where_field_in_values('name', [category.name for category in product.categories])
         categories = categories_repository.get(filters=categories_query)
 
-        products_tags = [ProductToTag(product_id=product.id, tag_id=tag.id) for tag in tags.items]
-        products_categories = [ProductToCategory(product_id=product.id, tag_id=category.id) for category in categories.items]
+        products_tags = [ProductTagRelation(product_id=product.id, tag_id=tag.id) for tag in tags.items]
+        products_categories = [ProductCategoryRelation(product_id=product.id, tag_id=category.id) for category in categories.items]
 
         products_tags_repository.add_many(products_tags)
         products_categories_repository.add_many(products_categories)

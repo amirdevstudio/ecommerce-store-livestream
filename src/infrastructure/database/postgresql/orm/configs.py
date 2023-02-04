@@ -46,6 +46,8 @@ class BaseEntity(Model):
 
         @staticmethod
         def table_function(model_class):
+            if hasattr(model_class, "__tablename__"):
+                return model_class.__tablename__
             return tableize(model_class.__name__)
 
 

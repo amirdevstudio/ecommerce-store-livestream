@@ -12,12 +12,7 @@ class OrmFactory(IFactory):
         self.mapper = mapper
 
     def create_many(self, __count: int = 5, *args, **kwargs):
-        entities = [self.create(*args, **kwargs) for _ in range(__count)]
-
-        for i, entity in enumerate(entities):
-            entities[i] = self.mapper.orm_to_domain(entity)
-
-        return entities
+        return [self.create(*args, **kwargs) for _ in range(__count)]
 
     def create(self, *args, **kwargs):
         entity = self.factory.create(*args, **kwargs)

@@ -1,7 +1,15 @@
+from abc import abstractmethod, ABC
+
 from tests.utils.factories.orm.factory import OrmFactory
 
 
-class AbstractDataLoader:
+class IDataLoader(ABC):
+    @abstractmethod
+    def load(self, *args, **kwargs):
+        ...
+
+
+class AbstractDataLoader(IDataLoader, ABC):
     def __init__(self, factory: OrmFactory):
         self.factory = factory
         self.loaded_orm_entities = []

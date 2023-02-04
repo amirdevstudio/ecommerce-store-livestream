@@ -4,11 +4,11 @@ from src.infrastructure.database.postgresql.orm.models.product import Product, P
 from src.infrastructure.database.postgresql.orm.configs import BaseAssociation
 
 
-class ProductToTag(BaseAssociation):
+class ProductTagRelation(BaseAssociation):
     product_id = ForeignKeyField(Product, backref='tags')
     tag_id = ForeignKeyField(ProductTag, backref='products')
 
 
-class ProductToCategory(BaseAssociation):
+class ProductCategoryRelation(BaseAssociation):
     product_id = ForeignKeyField(Product, backref='categories')
     category_id = ForeignKeyField(ProductCategory, backref='products')

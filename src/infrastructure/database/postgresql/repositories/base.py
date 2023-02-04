@@ -89,7 +89,7 @@ class BasePostgresqlRepository(
             entities_as_dicts.append(entity_as_dict)
 
         with database.atomic():
-            inserted_ids = self.orm_class.insert_many(entities_as_dicts).execute()
+            inserted_ids = self.orm_class.insert_many(entities_as_dicts).load()
             inserted_ids = [id_[0] for id_ in inserted_ids.row_cache]
 
         return inserted_ids
@@ -101,7 +101,7 @@ class BasePostgresqlRepository(
         return self.auto_mapper.orm_to_domain(orm_entity)
 
     def delete(self, entity_id: _EntityIdType, *args, **kwargs):
-        self.orm_class.delete().where(self.orm_class.id == entity_id).execute()
+        self.orm_class.delete().where(self.orm_class.id == entity_id).load()
 
     def count(self, filters: QueryFilters) -> int:
         query = self.orm_class.select()

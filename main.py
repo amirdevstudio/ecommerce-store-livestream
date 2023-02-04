@@ -15,6 +15,6 @@ if __name__ == "__main__":
     reset_tables()
 
     loader = DataLoader()
-    loader.execute()
+    loader.load()
 
     uvicorn.run("src.web.app:app", reload=True)
