@@ -1,8 +1,8 @@
 from amir_dev_studio.dependency_injection import add_transient_service
 
-from src.application.functions.create_product import CreateProduct
-from src.application.functions.get_product import GetProduct
-from src.application.functions.get_products import GetProducts
+from src.application.use_cases.create_product import CreateProduct
+from src.application.use_cases.get_product import GetProduct
+from src.application.use_cases.get_products import GetProducts
 
 
 def configure_dependencies():

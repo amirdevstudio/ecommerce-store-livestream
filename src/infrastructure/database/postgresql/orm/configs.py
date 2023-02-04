@@ -35,7 +35,7 @@ database = PostgresqlDatabase(
 database._state = _PeeweeConnectionState()
 
 
-class BaseModel(Model):
+class BaseEntity(Model):
     id = AutoField()
     db_record_created_at = DateTimeField(default=datetime.now)
     db_record_updated_at = DateTimeField(default=datetime.now)
@@ -49,4 +49,4 @@ class BaseModel(Model):
             return tableize(model_class.__name__)
 
 
-BaseAssociation = BaseModel
+BaseAssociation = BaseEntity

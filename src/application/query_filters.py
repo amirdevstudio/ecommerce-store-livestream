@@ -51,11 +51,35 @@ class QueryFilters:
             )
         return filters
 
-class QueryFilterRecipes:
+class QueryFilterTemplates:
     @staticmethod
-    def where_field_in_values(field_: str, value: Iterable[Any]):
-        return QueryFilters.from_tuples([(field_, value, QueryFilterOperators.IN)])
+    def _compile_as_filters(filter_: QueryFilter) -> QueryFilters:
+        filters = QueryFilters()
+        filters.add(filter_)
+        return filters
 
-    @staticmethod
-    def where_id_equals_value(value: int):
-        return QueryFilters.from_tuples([("id", value, QueryFilterOperators.EQUALS)])
+    @classmethod
+    def where_field_in_values(cls, field_: str, value: Iterable[Any], compiled_as_filters: bool = True):
+        res = QueryFilter(
+            field=field_,
+            value=value,
+            operator=QueryFilterOperators.IN
+        )
+
+        if compiled_as_filters:
+            res = cls._compile_as_filters(res)
+
+        return res
+
+    @classmethod
+    def where_id_equals_value(cls, value: int, compile_as_filters: bool = True):
+        res = QueryFilter(
+            field="id",
+            value=value,
+            operator=QueryFilterOperators.EQUALS
+        )
+
+        if compile_as_filters:
+            res = cls._compile_as_filters(res)
+
+        return res

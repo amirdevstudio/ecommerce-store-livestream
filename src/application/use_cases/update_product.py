@@ -1,11 +1,14 @@
 from amir_dev_studio.dependency_injection import get_service
 
-from src.application.interfaces.functions import AbstractFunction
+from src.application.interfaces.functions import AbstractUseCase
 from src.application.interfaces.repositories import AbstractProductRepository
-from src.domain.models.product import Product
+from src.domain.entities.product import Product
 
 
-class UpdateProduct(AbstractFunction):
+class UpdateProduct(AbstractUseCase):
+    def __init__(self):
+        self.repository = get_service(AbstractProductRepository)
+        
     def call(self, product_id: int, product: Product):
         if not product.id:
             product.id = product_id
@@ -13,5 +16,4 @@ class UpdateProduct(AbstractFunction):
         if product.id != product_id:
             raise ValueError("Product ID does not match the given ID")
 
-        repository = get_service(AbstractProductRepository)
-        return repository.update(product)
+        return self.repository.update(product)

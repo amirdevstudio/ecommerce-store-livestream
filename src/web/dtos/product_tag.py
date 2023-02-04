@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.domain.models.product import ProductTag
+from src.domain.entities.product import ProductTag
 from src.web.dtos.abstract import AbstractHttpResponseDto, AbstractHttpRequestDto
 
 

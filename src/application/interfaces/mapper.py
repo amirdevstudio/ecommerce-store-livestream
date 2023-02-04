@@ -5,7 +5,7 @@ _DomainEntity = TypeVar("_DomainEntity")
 _OrmEntity = TypeVar("_OrmEntity")
 
 
-class AbstractEntityMapper(ABC, Generic[_DomainEntity, _OrmEntity]):
+class IEntityMapper(ABC, Generic[_DomainEntity, _OrmEntity]):
     @abstractmethod
     def domain_to_dict(self, domain_entity: _DomainEntity) -> dict:
         ...

@@ -4,40 +4,40 @@ from typing import Generic, TypeVar, Optional, List
 from src.application.pagination import PaginatedResults, PaginationOptions
 from src.application.query_filters import QueryFilters
 from src.application.sorting import SortingOptions
-from src.domain.models.product import Product, ProductCategory, ProductTag
+from src.domain.entities.product import Product, ProductCategory, ProductTag
 
-_EntityType = TypeVar("_EntityType")
-_EntityIdType = TypeVar("_EntityIdType")
+_ModelType = TypeVar("_ModelType")
+_ModelIdType = TypeVar("_ModelIdType")
 
 
-class AbstractRepository(ABC, Generic[_EntityType, _EntityIdType]):
+class AbstractRepository(ABC, Generic[_ModelType, _ModelIdType]):
     @abstractmethod
     def get(
             self,
             filters: Optional[QueryFilters] = None,
             sorting_options: Optional[SortingOptions] = None,
             pagination_options: Optional[PaginationOptions] = None
-    ) -> PaginatedResults[_EntityType]:
+    ) -> PaginatedResults[_ModelType]:
         ...
 
     @abstractmethod
-    def get_by_id(self, entity_id: _EntityIdType, *args, **kwargs) -> Optional[_EntityType]:
+    def get_by_id(self, entity_id: _ModelIdType, *args, **kwargs) -> Optional[_ModelType]:
         ...
 
     @abstractmethod
-    def add(self, entity: _EntityType, *args, **kwargs) -> _EntityType:
+    def add(self, entity: _ModelType, *args, **kwargs) -> _ModelType:
         ...
 
     @abstractmethod
-    def add_many(self, entities: List[_EntityType], *args, **kwargs) -> List[_EntityType]:
+    def add_many(self, entities: List[_ModelType], *args, **kwargs) -> List[int]:
         ...
 
     @abstractmethod
-    def update(self, entity: _EntityType, *args, **kwargs) -> _EntityType:
+    def update(self, entity: _ModelType, *args, **kwargs) -> _ModelType:
         ...
 
     @abstractmethod
-    def delete(self, entity_id: _EntityIdType, *args, **kwargs) -> None:
+    def delete(self, entity_id: _ModelIdType, *args, **kwargs) -> bool:
         ...
 
 
@@ -50,4 +50,12 @@ class AbstractProductCategoriesRepository(AbstractRepository[ProductCategory, in
 
 
 class AbstractProductTagsRepository(AbstractRepository[ProductTag, int], ABC):
+    ...
+
+
+class AbstractProductToCategoryRepository(AbstractRepository[ProductCategory, int], ABC):
+    ...
+
+
+class AbstractProductToTagRepository(AbstractRepository[ProductTag, int], ABC):
     ...

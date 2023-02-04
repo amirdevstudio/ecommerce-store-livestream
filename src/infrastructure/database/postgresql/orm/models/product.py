@@ -1,17 +1,17 @@
 from peewee import CharField, DecimalField
 
-from src.infrastructure.database.postgresql.orm.configs import BaseModel
+from src.infrastructure.database.postgresql.orm.configs import BaseEntity
 
 
-class Product(BaseModel):
+class Product(BaseEntity):
     name = CharField()
     price = DecimalField()
     description = CharField()
 
 
-class ProductCategory(BaseModel):
+class ProductCategory(BaseEntity):
     name = CharField()
 
 
-class ProductTag(BaseModel):
+class ProductTag(BaseEntity):
     name = CharField()

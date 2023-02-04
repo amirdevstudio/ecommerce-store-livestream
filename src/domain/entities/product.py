@@ -1,23 +1,23 @@
 from dataclasses import dataclass, field
 from typing import List
 
-from src.domain.models.base import BaseModel
+from src.domain.entities.base import BaseEntity
 
 
 @dataclass
-class ProductCategory(BaseModel):
+class ProductCategory(BaseEntity):
     name: str
 
 
 @dataclass
-class ProductTag(BaseModel):
+class ProductTag(BaseEntity):
     name: str
 
 
 @dataclass
-class Product(BaseModel):
+class Product(BaseEntity):
     name: str
-    price: float
     description: str
+    price: float
     categories: List[ProductCategory] = field(default_factory=list)
     tags: List[ProductTag] = field(default_factory=list)

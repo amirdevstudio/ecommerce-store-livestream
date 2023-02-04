@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from src.web.dtos.abstract import AbstractHttpRequestDto, AbstractHttpResponseDto
-from src.domain.models.product import Product
+from src.domain.entities.product import Product
 from src.web.dtos.product_category import ProductCategoryHttpResponseDto, ProductCategoryHttpRequestDto
 from src.web.dtos.product_tag import ProductTagHttpResponseDto, ProductTagHttpRequestDto
 

@@ -3,16 +3,16 @@ from typing import Optional
 from amir_dev_studio.dependency_injection import get_service
 from fastapi import APIRouter, Depends, Body
 
-from src.application.functions.create_product import CreateProduct
-from src.application.functions.delete_product_hard import HardDeleteProduct
-from src.application.functions.delete_product_soft import SoftDeleteProduct
-from src.application.functions.get_products import GetProducts
-from src.application.functions.update_product_price import UpdateProductPrice
-from src.application.interfaces.functions import AbstractFunctionExecutor, AbstractFunction
+from src.application.use_cases.create_product import CreateProduct
+from src.application.use_cases.delete_product_hard import HardDeleteProduct
+from src.application.use_cases.delete_product_soft import SoftDeleteProduct
+from src.application.use_cases.get_products import GetProducts
+from src.application.use_cases.update_product_price import UpdateProductPrice
+from src.application.interfaces.functions import AbstractUseCaseExecutor, AbstractUseCase
 from src.application.pagination import PaginationOptions, PaginatedResults
 from src.application.query_filters import QueryFilters, QueryFilterOperators
 from src.application.sorting import SortingOptions, SortingDirections
-from src.domain.models.product import Product
+from src.domain.entities.product import Product
 from src.web.api.v1.dependencies import get_pagination_options
 from src.web.dtos.product import ProductHttpRequestDto, ProductHttpResponseDto, ProductHttpRequestDtoWithId
 
@@ -46,8 +46,8 @@ def get_products(
         pagination_options: PaginationOptions = Depends(get_pagination_options),
         filters: QueryFilters = Depends(_get_query_filters),
         sorting_options: SortingOptions = Depends(_get_sorting_options),
-        executor: AbstractFunctionExecutor = Depends(lambda: get_service(AbstractFunctionExecutor)),
-        function: AbstractFunction[PaginatedResults[Product]] = Depends(lambda: get_service(GetProducts))
+        executor: AbstractUseCaseExecutor = Depends(lambda: get_service(AbstractUseCaseExecutor)),
+        function: AbstractUseCase[PaginatedResults[Product]] = Depends(lambda: get_service(GetProducts))
 ) -> PaginatedResults:
     paginated_results = executor.execute(
         function,
@@ -62,8 +62,8 @@ def get_products(
 @router.get('/{product_id}')
 def get_product(
         product_id: int,
-        executor: AbstractFunctionExecutor = Depends(lambda: get_service(AbstractFunctionExecutor)),
-        function: AbstractFunction[Product] = Depends(lambda: get_service(GetProducts))
+        executor: AbstractUseCaseExecutor = Depends(lambda: get_service(AbstractUseCaseExecutor)),
+        function: AbstractUseCase[Product] = Depends(lambda: get_service(GetProducts))
 ) -> ProductHttpResponseDto:
     product = executor.execute(function, product_id=product_id)
     return ProductHttpResponseDto.from_domain_model(product)
@@ -73,8 +73,8 @@ def get_product(
 def patch_product_price(
         product_id: str,
         price: int = Body(embed=True),
-        executor: AbstractFunctionExecutor = Depends(lambda: get_service(AbstractFunctionExecutor)),
-        function: AbstractFunction[Product] = Depends(lambda: get_service(UpdateProductPrice))
+        executor: AbstractUseCaseExecutor = Depends(lambda: get_service(AbstractUseCaseExecutor)),
+        function: AbstractUseCase[Product] = Depends(lambda: get_service(UpdateProductPrice))
 ) -> ProductHttpResponseDto:
     product = executor.execute(function, product_id=product_id, price=price)
     return ProductHttpResponseDto.from_domain_model(product)
@@ -83,8 +83,8 @@ def patch_product_price(
 @router.post('', status_code=201)
 def post_product(
         product_dto: ProductHttpRequestDto,
-        executor: AbstractFunctionExecutor = Depends(lambda: get_service(AbstractFunctionExecutor)),
-        function: AbstractFunction[Product] = Depends(lambda: get_service(CreateProduct))
+        executor: AbstractUseCaseExecutor = Depends(lambda: get_service(AbstractUseCaseExecutor)),
+        function: AbstractUseCase[Product] = Depends(lambda: get_service(CreateProduct))
 ) -> ProductHttpResponseDto:
     product = product_dto.to_domain_model()
     product = executor.execute(function, product=product)
@@ -95,8 +95,8 @@ def post_product(
 def put_product(
         product_id: str,
         product_dto: ProductHttpRequestDtoWithId,
-        executor: AbstractFunctionExecutor = Depends(lambda: get_service(AbstractFunctionExecutor)),
-        function: AbstractFunction[Product] = Depends(lambda: get_service(UpdateProductPrice))
+        executor: AbstractUseCaseExecutor = Depends(lambda: get_service(AbstractUseCaseExecutor)),
+        function: AbstractUseCase[Product] = Depends(lambda: get_service(UpdateProductPrice))
 ) -> ProductHttpResponseDto:
     product = product_dto.to_domain_model()
     product = executor.execute(function, product_id=product_id, product=product)
@@ -107,9 +107,9 @@ def put_product(
 def delete_product(
         product_id: str,
         is_soft_delete: bool = True,
-        executor: AbstractFunctionExecutor = Depends(lambda: get_service(AbstractFunctionExecutor)),
-        hard_delete_function: AbstractFunction[None] = Depends(lambda: get_service(HardDeleteProduct)),
-        soft_delete_function: AbstractFunction[None] = Depends(lambda: get_service(SoftDeleteProduct))
+        executor: AbstractUseCaseExecutor = Depends(lambda: get_service(AbstractUseCaseExecutor)),
+        hard_delete_function: AbstractUseCase[None] = Depends(lambda: get_service(HardDeleteProduct)),
+        soft_delete_function: AbstractUseCase[None] = Depends(lambda: get_service(SoftDeleteProduct))
 ) -> None:
     if is_soft_delete:
         executor.execute(soft_delete_function, product_id=product_id)

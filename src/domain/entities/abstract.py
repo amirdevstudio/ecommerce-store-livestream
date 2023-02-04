@@ -3,5 +3,5 @@ from dataclasses import dataclass
 
 
 @dataclass
-class AbstractModel(ABC):
+class AbstractEntity(ABC):
     ...

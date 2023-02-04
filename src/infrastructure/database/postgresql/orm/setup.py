@@ -1,13 +1,13 @@
 from src.infrastructure.database.postgresql.orm.configs import database
 from src.infrastructure.database.postgresql.orm.models.product import Product, ProductCategory, ProductTag
-from src.infrastructure.database.postgresql.orm.associations import ProductsTags, ProductsCategories
+from src.infrastructure.database.postgresql.orm.associations import ProductToTag, ProductToCategory
 
 _models = [
     Product,
     ProductCategory,
     ProductTag,
-    ProductsTags,
-    ProductsCategories
+    ProductToTag,
+    ProductToCategory
 ]
 
 def reset_tables() -> None:

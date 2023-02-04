@@ -4,13 +4,13 @@ from typing import Generic, TypeVar
 ReturnType = TypeVar("ReturnType")
 
 
-class AbstractFunction(ABC, Generic[ReturnType]):
+class AbstractUseCase(ABC, Generic[ReturnType]):
     @abstractmethod
     def call(self, *args, **kwargs) -> ReturnType:
         ...
 
 
-class AbstractFunctionExecutor(ABC):
+class AbstractUseCaseExecutor(ABC):
     @abstractmethod
-    def execute(self, function: AbstractFunction[ReturnType], *args, **kwargs) -> ReturnType:
+    def execute(self, function: AbstractUseCase[ReturnType], *args, **kwargs) -> ReturnType:
         ...
