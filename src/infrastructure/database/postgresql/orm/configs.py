@@ -3,12 +3,12 @@ from datetime import datetime
 
 from inflection import tableize
 # noinspection PyProtectedMember
-from peewee import _ConnectionState
 from peewee import (
+    _ConnectionState,
+    BigAutoField,
     PostgresqlDatabase,
     Model,
     DateTimeField,
-    AutoField,
 )
 
 _db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
@@ -36,7 +36,7 @@ database._state = _PeeweeConnectionState()
 
 
 class BaseEntity(Model):
-    id = AutoField()
+    id = BigAutoField()
     db_record_created_at = DateTimeField(default=datetime.now)
     db_record_updated_at = DateTimeField(default=datetime.now)
     db_record_deleted_at = DateTimeField(null=True)

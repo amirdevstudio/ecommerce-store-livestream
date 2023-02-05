@@ -1,6 +1,7 @@
-from abc import ABC
 from threading import Lock
 from typing import TypeVar, Generic, Type, Optional, List
+
+from peewee import BaseQuery
 
 from src.application.interfaces.repositories import AbstractRepository
 from src.application.pagination import PaginationOptions, PaginatedResults
@@ -13,11 +14,6 @@ from src.domain.entities.abstract import AbstractEntity as AbstractDomainModel
 
 _EntityType = TypeVar("_EntityType", bound=AbstractDomainModel)
 _EntityIdType = TypeVar("_EntityIdType")
-
-
-class BasePostgresqlManyToManyRepository:
-    def __init__(self, x, y):
-        ...
 
 
 class BasePostgresqlRepository(
@@ -33,13 +29,14 @@ class BasePostgresqlRepository(
         self.orm_class = orm_class
         self.auto_mapper = auto_mapper
 
-    def get(
+    def _get_query(
             self,
             filters: Optional[QueryFilters] = None,
             pagination_options: Optional[PaginationOptions] = None,
             sorting_options: Optional[SortingOptions] = None
-    ) -> PaginatedResults[_EntityType]:
+    ) -> BaseQuery:
         query = self.orm_class.select()
+
         extension = PeeweeSelectQueryExtension(query)
 
         if filters:
@@ -51,13 +48,22 @@ class BasePostgresqlRepository(
         if sorting_options:
             extension.apply_sorting(sorting_options)
 
-        orm_entities = extension.query.execute()
+        return extension.query
 
-        entities = [
-            self.auto_mapper.orm_to_domain(orm_entity)
-            for orm_entity in orm_entities
-        ]
+    def get(
+            self,
+            filters: Optional[QueryFilters] = None,
+            pagination_options: Optional[PaginationOptions] = None,
+            sorting_options: Optional[SortingOptions] = None
+    ) -> PaginatedResults[_EntityType]:
+        query = self._get_query(
+            filters=filters,
+            pagination_options=pagination_options,
+            sorting_options=sorting_options
+        )
 
+        entities = query.execute()
+        entities = self.auto_mapper.orms_to_domains(entities)
         entities_count = self.count(filters)
 
         return PaginatedResults(
@@ -81,18 +87,9 @@ class BasePostgresqlRepository(
         return self.auto_mapper.orm_to_domain(orm_entity)
 
     def add_many(self, entities: List[_EntityType], *args, **kwargs) -> List[int]:
-        entities_as_dicts = []
-
-        for entity in entities:
-            entity_as_dict = self.auto_mapper.domain_to_dict(entity)
-            entity_as_dict.pop('id')
-            entities_as_dicts.append(entity_as_dict)
-
-        with database.atomic():
-            inserted_ids = self.orm_class.insert_many(entities_as_dicts).load()
-            inserted_ids = [id_[0] for id_ in inserted_ids.row_cache]
-
-        return inserted_ids
+        entities = self.auto_mapper.domains_to_orms(entities)
+        entity_ids = self.orm_class.bulk_create(entities)
+        return entity_ids
 
     def update(self, entity: _EntityType, *args, **kwargs):
         orm_entity = self.auto_mapper.domain_to_orm(entity)
@@ -107,6 +104,8 @@ class BasePostgresqlRepository(
         query = self.orm_class.select()
 
         adapter = PeeweeSelectQueryExtension(query)
-        adapter.apply_filters(filters)
+
+        if filters:
+            adapter.apply_filters(filters)
 
         return adapter.query.count()

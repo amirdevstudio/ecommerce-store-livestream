@@ -1,4 +1,4 @@
-from src.infrastructure.database.postgresql.orm.associations import ProductCategoryRelation
+from src.infrastructure.database.postgresql.orm.relations import ProductCategoryRelation
 from tests.utils.factories.abstract import AbstractFactory
 
 

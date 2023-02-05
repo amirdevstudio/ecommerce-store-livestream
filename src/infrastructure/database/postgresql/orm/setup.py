@@ -1,6 +1,6 @@
 from src.infrastructure.database.postgresql.orm.configs import database
 from src.infrastructure.database.postgresql.orm.models.product import Product, ProductCategory, ProductTag
-from src.infrastructure.database.postgresql.orm.associations import ProductTagRelation, ProductCategoryRelation
+from src.infrastructure.database.postgresql.orm.relations import ProductTagRelation, ProductCategoryRelation
 
 _models = [
     Product,

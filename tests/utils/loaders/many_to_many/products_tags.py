@@ -1,7 +1,7 @@
 from random import choices
 from typing import List
 
-from src.infrastructure.database.postgresql.orm.associations import ProductTagRelation
+from src.infrastructure.database.postgresql.orm.relations import ProductTagRelation
 from src.infrastructure.database.postgresql.orm.models.product import Product, ProductTag
 from tests.utils.loaders.many_to_many.abstract import AbstractManyToManyDataLoader
 

@@ -1,4 +1,4 @@
-from src.infrastructure.database.postgresql.orm.associations import ProductTagRelation
+from src.infrastructure.database.postgresql.orm.relations import ProductTagRelation
 from tests.utils.factories.abstract import AbstractFactory
 
 

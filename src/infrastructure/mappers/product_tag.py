@@ -1,9 +1,9 @@
 from src.domain.entities.product import ProductTag as ProductTagDomainModel
-from src.application.interfaces.mapper import IEntityMapper
 from src.infrastructure.database.postgresql.orm.models.product import ProductTag as ProductTagOrmModel
+from src.infrastructure.mappers.abstract import AbstractEntityMapper
 
 
-class ProductTagMapper(IEntityMapper):
+class ProductTagMapper(AbstractEntityMapper[ProductTagDomainModel, ProductTagOrmModel]):
     def domain_to_dict(self, domain_entity: ProductTagDomainModel) -> dict:
         return {
             'id': domain_entity.id if domain_entity.id else None,

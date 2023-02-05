@@ -1,9 +1,9 @@
-from src.application.interfaces.mapper import IEntityMapper, _DomainEntity
 from src.infrastructure.database.postgresql.orm.models.product import ProductCategory as ProductCategoryOrmModel
 from src.domain.entities.product import ProductCategory as ProductCategoryDomainModel
+from src.infrastructure.mappers.abstract import AbstractEntityMapper
 
 
-class ProductCategoryMapper(IEntityMapper[ProductCategoryDomainModel, ProductCategoryOrmModel]):
+class ProductCategoryMapper(AbstractEntityMapper[ProductCategoryDomainModel, ProductCategoryOrmModel]):
     def domain_to_dict(self, domain_entity: ProductCategoryDomainModel) -> dict:
         return {
             'id': domain_entity.id if domain_entity.id else None,
