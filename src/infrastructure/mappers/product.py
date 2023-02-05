@@ -21,14 +21,18 @@ class ProductMapper(AbstractEntityMapper[ProductDomainModel, ProductOrmModel]):
             id=domain_entity.id if domain_entity.id else None,
             name=domain_entity.name,
             description=domain_entity.description,
-            price=domain_entity.price,
+            price=domain_entity.price
         )
 
-    def orm_to_domain(self, orm_entity: ProductOrmModel, map_recursively: bool = True) -> ProductDomainModel:
+    def orm_to_domain(
+            self,
+            orm_entity: ProductOrmModel,
+            should_map_recursively: bool = True
+    ) -> ProductDomainModel:
         categories = []
         tags = []
 
-        if map_recursively:
+        if should_map_recursively:
             tag_mapper = get_service(ProductTagMapper)
             for tag_relation in orm_entity.tag_relations:
                 tag = tag_relation.tag
