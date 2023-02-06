@@ -86,10 +86,15 @@ class BasePostgresqlRepository(
 
         return self.auto_mapper.orm_to_domain(orm_entity)
 
-    def add_many(self, entities: List[_EntityType], *args, **kwargs) -> List[int]:
+    def add_many(self, entities: List[_EntityType], *args, **kwargs) -> List[_EntityType]:
+        if not entities:
+            return entities
+
         entities = self.auto_mapper.domains_to_orms(entities)
-        entity_ids = self.orm_class.bulk_create(entities)
-        return entity_ids
+        self.orm_class.bulk_create(entities)
+        entities = self.auto_mapper.orms_to_domains(entities)
+
+        return entities
 
     def update(self, entity: _EntityType, *args, **kwargs):
         orm_entity = self.auto_mapper.domain_to_orm(entity)

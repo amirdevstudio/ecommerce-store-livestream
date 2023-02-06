@@ -29,7 +29,7 @@ class AbstractRepository(ABC, Generic[_ModelType, _ModelIdType]):
         ...
 
     @abstractmethod
-    def add_many(self, entities: List[_ModelType], *args, **kwargs) -> List[int]:
+    def add_many(self, entities: List[_ModelType], *args, **kwargs) -> List[_ModelType]:
         ...
 
     @abstractmethod
